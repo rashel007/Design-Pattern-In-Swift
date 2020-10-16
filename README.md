@@ -39,6 +39,107 @@ tasks.observer = observer
 tasks.point = 6
 ```
 
+### Iterator
+```swift 
+// Iterator Design Pattern
+
+class Human{
+    var firstname: String
+    var lastname: String
+    
+    init(firstname: String, lastname: String) {
+        self.firstname = firstname
+        self.lastname = lastname
+    }
+}
+
+
+protocol HumanIterator{
+    func next() -> Human?
+    func currentItem() -> Human?
+    func isDone() -> Bool
+    var count: Int{get}
+}
+
+
+protocol Aggregate{
+    func getIterator() -> HumanIterator
+    func getItem(_ index: Int) -> Human
+}
+
+
+class HumanAggregate: Aggregate {
+    
+    private var list: [Human] = []
+    
+    var count: Int {
+        return list.count
+    }
+    
+    func add(_ h: Human){
+        list.append(h)
+    }
+    
+    func pop() {
+        if count > 0 {
+            list.removeLast()
+        }
+    }
+    
+    func getIterator() -> HumanIterator {
+        return Iterator(self)
+    }
+    
+    func getItem(_ index: Int) -> Human {
+        return list[index]
+    }
+}
+
+class Iterator: HumanIterator {
+    
+    private var list: HumanAggregate
+    
+    var index: Int = 0
+    
+    var count: Int {
+        return list.count
+    }
+    
+    init(_ list: HumanAggregate) {
+        self.list = list
+    }
+    
+    func next() -> Human? {
+        defer {
+            index += 1
+        }
+        
+        return isDone() ? list.getItem(index) : nil
+    }
+    
+    func currentItem() -> Human? {
+        return list.getItem(index)
+    }
+    
+    func isDone() -> Bool {
+        return index < count
+    }
+}
+
+let hum = HumanAggregate()
+
+hum.add(Human(firstname: "One", lastname: "last 1"))
+hum.add(Human(firstname: "Tow", lastname: "last 2"))
+
+let iterator = hum.getIterator()
+
+while iterator.isDone() {
+    print(iterator.currentItem()?.firstname)
+    iterator.next()
+}
+
+```
+
 ### Strategy
 
 ```swift
