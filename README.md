@@ -248,3 +248,93 @@ obj2.say()
 ```
 
 > A factory pattern is a creational pattern. A strategy pattern is an operational pattern. Put another way, a factory pattern is used to create objects of a specific type. A strategy pattern is use to perform an operation (or set of operations) in a particular manner. In the classic example, a factory might create different types of Animals: Dog, Cat, Tiger, while a strategy pattern would perform particular actions, for example, Move; using Run, Walk, or Lope strategies.
+
+
+### Builder 
+
+```swift
+
+enum ClassRoom: Int {
+    case ONE = 1
+    case TWO = 2
+    case Three = 3
+    case FOUR = 4
+}
+
+class Student{
+    let name: String?
+    let fullname: String?
+    let age: Int?
+    let mobile: String?
+    let id: Int?
+    let classRoom: ClassRoom?
+    
+    
+    init(name: String?, fullname: String?, age: Int?, mobile: String?, id: Int?, classRoom: ClassRoom?) {
+        self.name = name
+        self.fullname = fullname
+        self.age = age
+        self.mobile = mobile
+        self.id = id
+        self.classRoom = classRoom
+    }
+}
+
+class StudentBuilder{
+    
+    private var name: String?
+    private var fullname: String?
+    private var age: Int?
+    private var mobile: String?
+    private var id: Int?
+    private var classRoom: ClassRoom?
+    
+    
+    func setName(name: String) ->Self {
+        self.name = name
+        return self
+    }
+    
+    func setFullName(fullname: String) -> Self{
+        self.fullname = fullname
+        return self
+    }
+    
+    func setAge(age: Int) -> Self{
+        self.age = age
+        return self
+    }
+    
+    func setMobile(mobile: String) -> Self{
+        self.mobile = mobile
+        return self
+    }
+    
+    func setID(id: Int) -> Self{
+        self.id = id
+        return self
+    }
+    
+    func setClassRoom(classRoom: ClassRoom) -> Self{
+        self.classRoom = classRoom
+        return self
+    }
+    
+    func build() -> Student {
+        return Student(name: name, fullname: fullname, age: age, mobile: mobile, id: id, classRoom: classRoom)
+    }
+    
+    
+}
+
+let student = StudentBuilder()
+    .setName(name: "EA Rashel")
+    .setAge(age: 20)
+    .setClassRoom(classRoom: .FOUR)
+    .build()
+
+print(student.name!)
+print(student.age!)
+print(student.classRoom!.rawValue)
+print(student.fullname) // nil
+```
